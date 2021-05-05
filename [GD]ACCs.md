@@ -20,9 +20,9 @@
 
 ### 1.2 符号: 
 
-![](https://github.com/minieyeqi/md/raw/main/images/1.PNG)
+![ACC_1](https://github.com/minieyeqi/md/raw/main/images/1.PNG)
 
-![](https://github.com/minieyeqi/md/raw/main/images/2.PNG)
+![ACC_2](https://github.com/minieyeqi/md/raw/main/images/2.PNG)
 
 &nbsp;
 ## 2. ACC系统类型及状态 
@@ -30,14 +30,14 @@
 
 * 根据纵向控制器执行器结构分类（4种）：
 
-![](https://github.com/minieyeqi/md/raw/main/images/3.PNG)
+![ACC_3](https://github.com/minieyeqi/md/raw/main/images/3.PNG)
 
 * 根据弯道行驶适应能力分类（4种）：
 
-![](https://github.com/minieyeqi/md/raw/main/images/4.PNG)
+![ACC_4](https://github.com/minieyeqi/md/raw/main/images/4.PNG)
 
 ### 2.2 ACC系统状态： 
-![](https://github.com/minieyeqi/md/raw/main/images/5.PNG)
+![ACC_5](https://github.com/minieyeqi/md/raw/main/images/5.PNG)
 
 ## 3.性能要求 
 ### 3.1 基本控制策略： 
@@ -68,7 +68,7 @@
     &nbsp;
 >2. 直道的探测距离：
     如果前车位于的 d<sub>*1*</sub> 至 d<sub>*max*</sub> 距离范围内，则ACC系统需要测量本车与前车之间的距离； 
-    ![](https://github.com/minieyeqi/md/raw/main/images/6.PNG)
+    ![ACC_6](https://github.com/minieyeqi/md/raw/main/images/6.PNG)
     &nbsp;
     如果前车位于 d<sub>*0*</sub> 至 d<sub>*1*</sub> 的距离范围内，ACC系统需要探测前车的存在，而不需要测量本车和前车 之间的距离和相对速度，同时，ACC系统应增加车间距和（或）禁止自动加速。
     &nbsp;
@@ -76,7 +76,7 @@
     &nbsp;
 >3. 目标识别能力：
     如果在直道上前方存在多辆车，或者在弯道上并且本车的ACC系统属于II型或III型或IV型，则与本车处于同一车道的前车将被选作ACC控制的目标车，检测方法在后面； 
-    ![](https://github.com/minieyeqi/md/raw/main/images/11.PNG)
+    ![ACC_7](https://github.com/minieyeqi/md/raw/main/images/11.PNG)
     &nbsp;
 >4. 弯道适应能力（类型II，III，IV）：
     ACC系统能够使车辆在直道和弯道上以车间时距的最大稳定车间时距稳定跟随前车。因此，如果前车沿半径为 R<sub>*min*</sub> 的弯道以恒速 v<sub>*circle*</sub> 行驶，ACC系统可使本身以稳定车间时距的最大稳定车间时距跟随前车。不同类型的ACC系统对弯道半径的适应能力不同：ACCI型仅适应于直道（可认为半径为无穷大）；ACC II 型可适应的弯道最小半径为 R<sub>*min,II*</sub> = 500m；ACC III 型可适应的弯道最小半径为 R<sub>*min,III*</sub> = 250m；ACC IV 型可适应的弯道最小半径为 R<sub>*min,IV*</sub> = 125m。
@@ -88,7 +88,7 @@
     a<sub>*lateral_max, III*</sub> = 2.3 m/s<sup>2</sup>;
     a<sub>*lateral_max, IV*</sub> = 2.3 m/s<sup>2</sup>.
     a<sub>*lateral_max* 用于分析驾驶员弯道驾驶行为（95%的驾驶员）,如下图：
-    ![](https://github.com/minieyeqi/md/raw/main/images/12.PNG)
+    ![ACC_8](https://github.com/minieyeqi/md/raw/main/images/12.PNG)
 
     
 
@@ -132,9 +132,9 @@
   * 故障处理
     * ACC系统重新开启之前应完成系统自检，自检过程可由点火开关或ACC系统开关触发。
     * ACC系统出现故障时的提示信息和故障应立即提示驾驶员（ACC II型系统发生的变速箱故障除外），提示信息应保持至系统关闭。
-    ![](https://github.com/minieyeqi/md/raw/main/images/13.PNG)
-    ![](https://github.com/minieyeqi/md/raw/main/images/14_1.PNG)
-    ![](https://github.com/minieyeqi/md/raw/main/images/15.PNG)
+    ![ACC_9](https://github.com/minieyeqi/md/raw/main/images/13.PNG)
+    ![ACC_10](https://github.com/minieyeqi/md/raw/main/images/14_1.PNG)
+    ![ACC_11](https://github.com/minieyeqi/md/raw/main/images/15.PNG)
 
 
 ## 4.性能评价的测试方法
@@ -145,6 +145,7 @@
 | 测试场地为平坦干燥的沥青或混凝土路面； |
 | 温度应在 0&deg;C~;40&deg;C 范围内； |
 | 水平能见度应大于1km； |
+
 &nbsp;
 ### 4.2 试验目标参数
 采用红外激光雷达测试时：
@@ -169,7 +170,7 @@
 ### 4.3 探测距离测试
 车辆参考平面为－矩形，宽度与本车宽度相当，高 0.9 m，离地 0.2 m，它是在综合考虑车体不同位置的横截面以及轿车高度限制的基础上确定的。 测试时，至少应保证使位于距离d阳的车辆参考平面内并且具有一定的横向位置偏移的反射体被探测到。
 
-![](https://github.com/minieyeqi/md/raw/main/images/16.PNG)
+![ACC_12](https://github.com/minieyeqi/md/raw/main/images/16.PNG)
 
 * 在 d<sub>*max*</sub> 距离处采用测试目标A；
 * 在 d<sub>*0*</sub>，d<sub>*1*</sub>和 d<sub>*2*</sub>距离处采用测试目标B；
@@ -182,12 +183,12 @@
 * 初始条件：
     * 两辆同型号的车辆在本车的前方以速度 v<sub>*vehicle_start*</sub> 同向行驶，两车纵向中心线间的距离为 3.5 m 士 0.25 m，车宽在 1.4 m～2m 之间；
     * 本车在车间时距控制模式下稳定跟随其中一辆前车行驶（该车即为目标车），车间时距为v <sub>*vehicle_start*</sub> 设定车速大于 v<sub>*vehicle_start*</sub>，本车与目标车纵向中心线间的横向偏差小于0.5 m；
-    ![](https://github.com/minieyeqi/md/raw/main/images/17.PNG)
+    ![ACC_13](https://github.com/minieyeqi/md/raw/main/images/17.PNG)
 * 测试过程：
   * 目标车加速至v<sub>*vehicle_end*</sub>，如果本车在ACC状态下超过相邻车道上的前车，则测试合格。 其中:
-  -- v<sub>*vehicle_end*</sub> = 27 m/s（约等于100km/h）；如果车辆元法实现上述速度，则采用 v<sub>*vehicle_end*</sub> = 22 m/ s （约等于80km/h); 
-  -- v<sub>*vehicle_start*</sub> = v<sub>*vehicle_end*</sub> - 3 m/s；
-  ![](https://github.com/minieyeqi/md/raw/main/images/18.PNG)
+     ![ACC_14](https://github.com/minieyeqi/md/raw/main/images/18.PNG)
+    * -- v<sub>*vehicle_end*</sub> = 27 m/s（约等于100km/h）；如果车辆元法实现上述速度，则采用 v<sub>*vehicle_end*</sub> = 22 m/ s （约等于80km/h); 
+    * -- v<sub>*vehicle_start*</sub> = v<sub>*vehicle_end*</sub> - 3 m/s；
 &nbsp;
 ### 4.5 弯道适应能力测试 
 * 概述
@@ -196,10 +197,10 @@
 * 测试场地
 测试场地适用于ACCII,ACCIII ,ACCN型系统。
 测试车道由某一半径的圆或一段足够长的曲线构成，弯道半径的取值范围为（80%～100%) R<sub>*min*</sub>。测试车道为双向车道，即可沿顺时针和逆时针方向行驶。对车道标线、护栏等设施没有限制要求:
-![](https://github.com/minieyeqi/md/raw/main/images/19.PNG)
->对于II型系统，R<sub>*min*</sub> II = 500 m 
-对于III型系统， R<sub>*min*</sub> III = 500 m 
-对于IV型系统， R<sub>*min*</sub> IV = 500 m 
+![ACC_15](https://github.com/minieyeqi/md/raw/main/images/19.PNG)
+>对于II型系统，R<sub>*min II*</sub> = 500 m 
+对于III型系统， R<sub>*min III*</sub> = 500 m 
+对于IV型系统， R<sub>*min IV*</sub> = 500 m 
 
 &nbsp;
 * 用于弯道适应能力测试的目标车
@@ -218,19 +219,19 @@ v<sub>*circle*</sub> = min[(a<sub>*lateral_max*</sub>)<sup>*1/2*</sup>, v<sub>*v
 选择适当时机，使目标车减速，观察本车的反应。正常情况下，在车间时距减小至(2/3)&tau;<sub>*max*</sub>之前，本车就会因与目标车车距减小而开始减速。
 &nbsp;
 弯道适应能力测试条件 - 目标车：
-![](https://github.com/minieyeqi/md/raw/main/images/20.PNG)
+![ACC_16](https://github.com/minieyeqi/md/raw/main/images/20.PNG)
 &nbsp;
 弯道适应能力测试条件 - 本车：
-![](https://github.com/minieyeqi/md/raw/main/images/21.PNG)
+![ACC_17](https://github.com/minieyeqi/md/raw/main/images/21.PNG)
 &nbsp;
 测试车道设置举例：
-![](https://github.com/minieyeqi/md/raw/main/images/22.PNG)
+![ACC_18](https://github.com/minieyeqi/md/raw/main/images/22.PNG)
 > 1 - 测试开始时．本车位于具有恒定半径的测试车道上．且满足其他初始条件；
 > 2 - 当丰车开始减速（正确反应）或车头时距降至(2/3)&tau;<sub>*max*</sub>时，测试结束。
 > 
 &nbsp;
 弯道适应能力测试的时间曲线：
-![](https://github.com/minieyeqi/md/raw/main/images/23.PNG)
+![ACC_19](https://github.com/minieyeqi/md/raw/main/images/23.PNG)
 
 
 
