@@ -25,8 +25,10 @@ Remote系统包含：
 
 
 #### 1.1.3 如何免密码连接linux
-* 上面我们已经连接上了自己的linux主机，不过每次输入密码太烦了下面我把ssh的公钥放到服务器上，可以使用 ssh-keygen 命令生成一对;
-* 然后把公钥拷贝到服务器到".../.ssh/authorizd_keys"中；
+* 上面我们已经连接上了自己的linux主机，不过每次输入密码太烦了下面我把ssh的公钥放到服务器上，可以使用 ssh-keygen 命令生成一对:
+  ![](https://github.com/minieyeqi/md/raw/main/images/ssh_44.PNG)
+* 然后把公钥拷贝到服务器到".../.ssh/authorizd_keys"中:
+  ![](https://github.com/minieyeqi/md/raw/main/images/ssh_55.PNG)
 * 执行cat id_rsa.pub >> authorized_keys；
 
 #### 1.1.4 如何使用可视化linux文件目录工作区
