@@ -18,16 +18,30 @@
   * 快 & 小
 
 ## 关键点技术
-* varints编码
-    > 1. 每个字节使用其中7位保存数字，最高位表示后面是否还有内容；
-    > 2. 低位在前，高位在后；
-    > 3. 保留 fixed32 和 fixed64，用于传递大整数；
-    > 4. int32, int64, uint32, unit64, bool，序列化结果相互兼容，可以修改；
-* zigzag编码
-    > 1. 传统上，负数最高位为1，小负数会浪费编码长度;
-    > 2. (n << 1)^(n >> 31);
-    > 3. -1 将会被编码成 1，1 将会被编码成 2，-2 会被编码成 3；
-    > 4. sint32 和 sint64 使用 zigzag 编码
+* varints 编码
+    > * 每个字节使用其中7位保存数字，最高位表示后面是否还有内容；
+    > * 低位在前，高位在后；
+    > * 保留 `fixed32` 和 `fixed64`，用于传递大整数；
+    > * `int32`, `int64`, `uint32`, `unit64`, `bool`，序列化结果相互兼容，可以修改；
+* zigzag 编码
+    > * 传统上，负数最高位为1，小负数会浪费编码长度;
+    > * `(n << 1)^(n >> 31)`;
+    > * -1 将会被编码成 1，1 将会被编码成 2，-2 会被编码成 3；
+    > * `sint32` 和 `sint64` 使用 zigzag 编码
+* message structure 编码
+    > * `Tag-Value`编码；
+    > * `Tag = (field_number << 3)|wire_type ->varints`;
+    > * `wire_type`:0 表示`varints`，1表示固定64，,表示固定32位；
+    > * `wire_type`:2 表示`Tag-Length-Value`编码，`Length`使用`varints`；
+    > * `string`，`bytes`，`message`嵌套，都采用TLV编码；
+* repeated 编码
+    > * 第一种方式：重复出现的相同`tag`；
+    > * 第二种方式(`packed=true`)，TLVVV...编码；
+    > 仅有数字类型才可以使用第二种方法，pd3中默认第二种；非`repeated`情况出现重复`tag`，后面的覆盖前面的，因此`optional`和`repeated`相互兼容；
+* protoc 编译器
+  > * C++ 编写的 proto 文件编译器；
+  > * 支持合资语言的插件，使用进程间通讯传递信息；
+  > * 安卓和iOS上有对应的插件支持，自动调用protoc；
 
 ## 怎么用
 > 参考 proto3 官网教程 https://developers.google.com/protocol-buffers/ 结合自己理解，分为以下：
@@ -84,8 +98,7 @@ message SearchRequest
  | `int32` | `page_name` | `2` |
  | `int32` | `result` | `3` |
  
- 请注意，范围为1到15的字段号需要一个字节来编码，包括字段号和字段的类型
- >（您可以在Protocol Buffer Encoding中找到有关此内容的更多信息）。
+ 请注意，范围为1到15的字段号需要一个字节来编码，包括字段号和字段的类型。
 
  #### 1.3 指定字段规则
  字段规则：
@@ -253,3 +266,11 @@ message SearchResponse
     ```
     protoc --python_out=./proto_python  file.proto
     ``` 
+
+## 横向对比
+其他竞品：
+* JSON - 自解释，易读；
+* Thrift - 自带 rpc 方案，跨平台好；
+* MessagePack - 可以没有 IDL，比 JSON 快和小；
+* Apache Avro - 性能好， hadoop 生态中成熟；
+* FlatBuffers - 无需反序列化；
