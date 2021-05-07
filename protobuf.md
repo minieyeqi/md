@@ -30,16 +30,18 @@
     >4. sint32 和 sint64 使用 zigzag 编码
 
 ## 怎么用
-> 参考 protobuf 官网教程 https://developers.google.com/protocol-buffers/ 结合自己理解，分为以下：
+> 参考 proto3 官网教程 https://developers.google.com/protocol-buffers/ 结合自己理解，分为以下：
 > * Proto3 的语法指南
-> * Python API
-> * C++ API
+> * Python 接口端使用
+> * C++ 接口端使用
 
 ### Proto3 的语法指南
+> 参考 https://developers.google.com/protocol-buffers/docs/proto3
 > * 1.定义消息类型
 > * 2.标量值类型
-> * 3.可选和默认值
+> * 3.默认值
 > * 4.枚举
+> * 5.嵌套类型
 #### 1. 定义消息类型
 建立 .proto文件（.proto 是用于定义消息类型的文件）；
 * 指定字段类型；
@@ -53,11 +55,13 @@
 # 举个例子开始，
 # 搜索请求消息的格式 - 每个搜索请求都对应一个查询字符串、感兴趣的特定页面以及每页结果数量：
 
+syntax = 'proto3'; // 指定proto3的语法，否则认定proto2
+
 message SearchRequest
 {
-    required string query = 1;
-    optional int32 page_number = 2;
-    optional int32 result = 3;
+    string query = 1;
+    int32 page_number = 2;
+    int32 result = 3;
 }
 
 # SearchRequest消息指定了三个字段（类型 名称 = 值队） 
@@ -74,7 +78,7 @@ message SearchRequest
 
  #### 1.2 分配字段编号
  消息定义中的每个字段都有一个唯一的编号。这些数字用于标识消息二进制格式的字段。在上面的示例中，如下所示：
-  | 字段类型 | 字段名称 | 字段编号 |
+ | 字段类型 | 字段名称 | 字段编号 |
  | :-: | :-: | :-: |
  | `string` | `query`| `1` |
  | `int32` | `page_name` | `2` |
@@ -85,23 +89,19 @@ message SearchRequest
 
  #### 1.3 指定字段规则
  字段规则：
- * `required`:格式正确的消息必须至少有一个。
- * `optional`:格式正确的消息可以包含零个或多个。
- * `repeated`:格式正确的消息可以包含零个或多个。
- 
+ 相比较于proto2 移除了`required`规则，并把`optional`规则改为`singual`。
+ * `singual`:格式正确的消息可以包含零个或多个，这是proto3语法的默认字段规则。
+ * `repeated`:格式正确的消息可以包含零个或多个，重复值的顺序将保留，在proto3中，默认情况下打包标量数字类型的重复字段。
+
  | 字段规则 | 字段类型 | 字段名称 | 字段编号 |
  | :-: | :-: | :-: | :-: |
- | `required` | `string` | `query`| `1` |
- | `optional` | `int32` | `page_name` | `2` |
- | `repeated` | `int32` | `result` | `3` |
-
-```
-repeated int32 samples =4 [packed=true] 
- ```
-
+ | `sigual` | `string` | `query`| `1` |
+ | `sigual` | `int32` | `page_name` | `2` |
+ | `sigual` | `int32` | `result` | `3` |
+ 
 #### 1.4 添加更多消息类型
 可以在一个 .proto文件中定义多个消息类型。
-```
+ ```
 # 在上面例子基础上再定义一个
 message SearchRequest
 {
@@ -116,7 +116,7 @@ message SearchResponse
 # 合并消息会导致膨胀。虽然可以在单个.proto文件中定义多种消息类型（例如消息，枚举和服务），
 # 但是当在单个文件中定义大量具有不同依赖性的消息时，也可能导致依赖性膨胀。
 # 建议每个.proto文件包含尽可能少的消息类型。
-```
+ ```
 #### 1.5 添加注释
 注释格式和C++一样
 ```
@@ -128,7 +128,7 @@ message SearchRequest {
   optional int32 page_number = 2;  // Which page number do we want?
   optional int32 result_per_page = 3;  // Number of results to return per page.
 }
-```
+ ```
 
 #### 1.6 保留字段
 如果您通过完全删除字段或将其注释掉来更新消息类型，则将来的用户在自己对该类型进行更新时可以重用该字段号。或者以后加载旧版本的旧版本，可能会导致严重的问题.proto，包括数据损坏，隐私错误等。
@@ -139,12 +139,117 @@ message Foo
     reserved 2, 15, 9 to 11;
     reserved "foo", "bar";
 }
-```
+ ```
 
 ### 2. 标量值类型
 字段的标量值类型如下：
+![](https://github.com/minieyeqi/md/raw/main/images/protobuf_1.PNG)
+![](https://github.com/minieyeqi/md/raw/main/images/protobuf_2.PNG)
 
-
-### 3. 可选和默认值
+### 3. 默认值
+解析消息时，如果编码的消息不包含特定`sigual`的元素，则已解析对象中的相应字段将设置为该字段的默认值。这些默认值是特定于类型的：
+* 对于字符串`string`，默认值为空字符串。
+* 对于字节`bytes`，默认值为空字节。
+* 对于布尔值`bool`，默认值为false。
+* 对于数字类型，默认值为零。
+* 对于枚举，默认值为第一个定义的枚举值，必须为0。
+* 对于消息字段，未设置该字段。它的确切值取决于语言。
 
 ### 4.枚举
+在定义消息类型时，可能希望其字段之一仅具有一个预定义的值列表。
+承接上面的例子，添加一个`Corpus`类型字段到每个`SearchRequest`中，可通过枚举的方式；
+ ```
+syntax = 'proto3'
+
+message SearchRequest
+{
+    string query = 1;
+    int32 page_number = 2;
+    int32 result_per_page = 3;
+    enum Corpus
+    {
+        UNIVERSAL = 0；
+        WEB = 1;
+        IMAGES = 2;
+        LOCAL = 3;
+        NEWS = 4;
+        PRODUCTS = 5;
+        VIDEO = 6;
+    }
+    Corpus corpus = 4;
+}
+ ```
+
+### 5.嵌套类型
+可以在其他消息类型中定义和使用消息类型。
+如上面例子中，`Result`消息是在`SearchResponse`消息内部定义的：
+```
+message SearchResponse
+{
+    message Result
+    {
+        string url = 1;
+        string title = 2;
+        repeated string snippets = 3;
+    }
+    repeated Result result = 1;
+}
+ ```
+ 如果要在父类消息以外的地方重用`Result`消息类型，方式是`_Parent_._Type_`:
+ ```
+ message SomeOtherMessage
+ {
+     SearchResponse.Result result = 1;
+ }
+ ```
+ 也可以根据需求深度嵌套消息：
+ ```
+ message Outer // level 0
+ {
+     message MiddleAA // level 1
+     {
+         message Inner // level 2
+         {
+             int64 ival = 1;
+             bool booly = 2;
+         }
+     }
+     message MiddleBB // level 1
+     {
+         message Inner // level 2 
+         {
+            int32 ival = 1;
+            bool booly = 2;
+         }
+     }
+ }
+ ```
+
+ ## Python 接口端使用
+ > 参考 https://developers.google.com/protocol-buffers/docs/reference/python-generated
+ > * 1.编译器调用
+### 1. 编译器调用
+步骤：
+* 编译器下载，安装python的protobuf，和安装pb依赖grpc_tools.protoc工具就是protocol-compiler：
+  ```
+    # 安装python的protobuf（两种方式）
+
+    # 1.pip3直接下载安装
+    sudo pip3 install protobuf
+     # 单独安装protocol-compiler
+    sudo apt-get install protocol-compiler
+
+
+    # 2.github下载编译安装 github:https://github.com/google/protobuf/releases 
+     # config文件下的编译安装protocol-compiler
+    sudo make & make install
+    protoc --version
+     # 进入python文件夹安装protobuf
+    python3 setup.py build
+    python3 setup.py test
+    python setup.py install --cpp_implementation
+  ```
+* python编译，建立`.proto`文件 >> `.proto`消息类型完成 >> 建立`python_proto`文件夹 >> 编译`.proto`文件，路径指定`python_proto/` >> 得到`_pd2.py`:
+    ```
+    protoc --python_out=./proto_python  file.proto
+    ``` 
