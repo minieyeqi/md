@@ -18,6 +18,7 @@
   * 快 & 小
 
 ## 关键点技术
+![](https://github.com/minieyeqi/md/raw/main/images/protobuf_3%20(1).jpg)
 * varints 编码
     > * 每个字节使用其中7位保存数字，最高位表示后面是否还有内容；
     > * 低位在前，高位在后；
@@ -29,6 +30,7 @@
     > * -1 将会被编码成 1，1 将会被编码成 2，-2 会被编码成 3；
     > * `sint32` 和 `sint64` 使用 zigzag 编码
 * message structure 编码
+  ![](https://github.com/minieyeqi/md/raw/main/images/protobuf_4.jpg)
     > * `Tag-Value`编码；
     > * `Tag = (field_number << 3)|wire_type ->varints`;
     > * `wire_type`:0 表示`varints`，1表示固定64，,表示固定32位；
@@ -274,3 +276,6 @@ message SearchResponse
 * MessagePack - 可以没有 IDL，比 JSON 快和小；
 * Apache Avro - 性能好， hadoop 生态中成熟；
 * FlatBuffers - 无需反序列化；
+  
+![](https://github.com/minieyeqi/md/raw/main/images/protobuf_5.jpg)
+![](https://github.com/minieyeqi/md/raw/main/images/protobuf_6.jpg)
